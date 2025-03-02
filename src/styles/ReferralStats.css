@@ -1,0 +1,141 @@
+.stats-container {
+  max-width: 48rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stats-header {
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1.25rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-label {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.referral-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.referral-list {
+  margin-top: 1rem;
+}
+
+.referral-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.referral-item:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.reward-amount {
+  color: #059669;
+  font-weight: 500;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.level-1 { background: #e0f2fe; color: #0369a1; }
+.level-2 { background: #f0fdf4; color: #15803d; }
+.level-3 { background: #fef3c7; color: #b45309; } 
+
+.tree-container {
+  padding: 2rem 0;
+  overflow-x: auto;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-level {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.tree-node {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  min-width: 200px;
+  transition: all 0.2s;
+}
+
+.tree-node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.node-address {
+  font-size: 0.875rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.node-rewards {
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+.level-indicator {
+  position: absolute;
+  left: -4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+} 
