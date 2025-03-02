@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { registerUser } from '../lib/web3/referral';
-import { Share2, ClipboardCheck, TestTube } from 'lucide-react';
+import { Share2, ClipboardCheck, TestTube, Coins } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -15,6 +15,9 @@ export function ReferralRegistration({ userAddress }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const tokenAmount = 20;
+  const tokenSymbol = "USDC";
 
   const getReferralLink = () => {
     const baseUrl = window.location.origin;
@@ -51,7 +54,7 @@ export function ReferralRegistration({ userAddress }: Props) {
 
 
   return (
-    <div className="min-h-screen bg-[#0A1929] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <TestTube className="mx-auto h-12 w-12 text-cyan-400" />
@@ -64,8 +67,18 @@ export function ReferralRegistration({ userAddress }: Props) {
         </div>
 
         <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6 shadow-xl">
-          <div className="space-y-6">
-            <div>
+          <div className="space-y-2">
+    
+              <div className="bg-[#0A1929]/50 rounded-lg border border-cyan-900/30 p-4">
+                <div className="flex items-center justify-center mb-2">
+                  <span className="text-sm font-medium text-gray-300 px-4">Registration Cost</span>
+                  <Coins className="h-5 w-5 text-cyan-400" />
+                </div>
+                <div className="flex items-center justify-center">
+                  <span className="text-2xl font-bold text-white">{tokenAmount} {tokenSymbol}</span>
+                </div>
+              </div>
+            
               <div className="flex items-center justify-between">
                 <label className="block text-sm font-medium text-gray-300">
                   Your Wallet Address
@@ -77,7 +90,7 @@ export function ReferralRegistration({ userAddress }: Props) {
               <div className="mt-1 p-3 bg-[#0A1929] rounded-lg border border-cyan-900/30">
                 <code className="text-sm text-gray-300 break-all">{userAddress}</code>
               </div>
-            </div>
+
 
             <div>
               <label className="block text-sm font-medium text-gray-300">

@@ -21,13 +21,13 @@ function App() {
   const { stats, loading: userStatsLoading, error: userStatsError } = useUserStats(address);
 
   // Block rendering until data is loaded
-  if (userStatsLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-[#0A1929]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
+  //if (userStatsLoading) {
+  //  return (
+  //    <div className="flex justify-center items-center min-h-screen bg-[#0A1929]">
+  //      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+  //    </div>
+  //  );
+  //}
 
   // Handle errors
   if (userStatsError) {

@@ -52,8 +52,7 @@ function TradingUpdates() {
   }, [loading]);
 
   return (
-    <div className="min-h-screen bg-[#0A192F] text-white">
-
+    <div className="min-h-screen text-white">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-4">

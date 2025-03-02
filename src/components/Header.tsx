@@ -67,12 +67,7 @@ export function Header({ onConnectIsAddress, currentAddress }: HeaderProps) {
                   }
                   inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium
                 `}
-                onClick={(e) => {
-                  if (!isConnected) {
-                    e.preventDefault();
-                  }
-                }}
-              >
+                >
                 <Icon className="h-4 w-4 mr-2" />
                 {item.name}
               </Link>
