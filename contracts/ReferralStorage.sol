@@ -29,4 +29,50 @@ contract ReferralStorage is Ownable {
     function getReferrals(address referrer) external view returns (address[] memory) {
         return referrals[referrer];
     }
+    function deleteUser(address userAddress) external onlyOwner {
+    // First check if user exists
+    require(users[userAddress].isRegistered, "User not registered");
+    
+    // Handle referral relationships
+    address referrer = users[userAddress].referrer;
+    if (referrer != address(0)) {
+        // Remove from referrer's direct referrals list
+        address[] storage referrerReferrals = referrals[referrer];
+        for (uint i = 0; i < referrerReferrals.length; i++) {
+            if (referrerReferrals[i] == userAddress) {
+                // Replace with last element and then pop
+                referrerReferrals[i] = referrerReferrals[referrerReferrals.length - 1];
+                referrerReferrals.pop();
+                
+                // Update referrer's referral count
+                users[referrer].referralCount = users[referrer].referralCount > 0 ? 
+                    users[referrer].referralCount - 1 : 0;
+                break;
+            }
+        }
+    }
+    
+    // Keep the referral tree intact by re-linking referrals
+    address[] memory userReferrals = referrals[userAddress];
+    for (uint i = 0; i < userReferrals.length; i++) {
+        // Update each referral's referrer to the deleted user's referrer
+        users[userReferrals[i]].referrer = referrer;
+        
+        // Add to referrer's direct referrals if there is a referrer
+        if (referrer != address(0)) {
+            referrals[referrer].push(userReferrals[i]);
+            users[referrer].referralCount++;
+        }
+    }
+    
+    // Clear the user's data
+    delete users[userAddress];
+    delete referrals[userAddress];
+    
+    // Emit an event for transparency
+    emit UserDeleted(userAddress, block.timestamp);
+    }
+
+    // Add this event to the contract
+    event UserDeleted(address indexed userAddress, uint256 timestamp);
 }

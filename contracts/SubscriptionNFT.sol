@@ -27,7 +27,7 @@ contract SubscriptionNFT is ERC721, Ownable {
     string private activeBaseURI;
     string private inactiveBaseURI;
     
-    uint256 public constant SUB_DURATION = 3 minutes;
+    uint256 public constant SUB_DURATION = 43800 minutes;
 
     event NFTMinted(uint256 indexed tokenId, address indexed to, uint256 expirationTime);
     event NFTExpired(uint256 indexed tokenId);

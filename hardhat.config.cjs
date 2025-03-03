@@ -12,7 +12,7 @@ module.exports = {
     polygon: {
       url: "https://polygon.llamarpc.com",
       accounts: [process.env.POLYGON_PRIVATE_KEY],
-      gasPrice: auto,
+      gasPrice: "auto",
     }
   },
   etherscan: {
@@ -24,7 +24,8 @@ module.exports = {
       optimizer: {
         enabled: true,
         runs: 200
-      }
+      },
+      viaIR: true
     }
   },
   paths: {

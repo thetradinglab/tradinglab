@@ -32,7 +32,7 @@ interface IReferralStorage {
     function deleteUser(address user) external;
 }
 
-contract ReferralV1 is Ownable, ReentrancyGuard, Initializable {
+contract ReferralV2 is Ownable, ReentrancyGuard, Initializable {
     using SafeERC20 for IERC20;
     using Strings for uint256;
     
@@ -641,139 +641,66 @@ contract ReferralV1 is Ownable, ReentrancyGuard, Initializable {
     /**
      * @dev Get referral tree for a user with pagination
      * @param user Address of the user
-     * @param offset Starting index for pagination
-     * @param limit Maximum number of results
-     * @return downline Array of ReferralInfo structs
+     * @return downline Referral tree of user
      */
-    function getReferralTree(
-        address user, 
-        uint256 offset, 
-        uint256 limit
-    ) external view returns (
+    function getReferralTree(address user) external view returns (
         ReferralInfo[] memory downline
     ) {
         require(storageConnected, "Storage not connected");
-        require(user != address(0), "Cannot query zero address");
-        require(limit <= 1000, "Limit too high");
         
-        // First calculate total size
+        // Calculate total possible size (all 3 levels)
         uint256 totalSize = 0;
         address[] memory level1 = referralStorage.getReferrals(user);
-        totalSize += level1.length > maxReferralsPerLevel ? maxReferralsPerLevel : level1.length;
-        uint256 level1Count;
-
-        if (maxReferralDepth >= 2) {
-            level1Count = level1.length > maxReferralsPerLevel ? maxReferralsPerLevel : level1.length;
-            for (uint i = 0; i < level1Count; i++) {
-                address[] memory level2 = referralStorage.getReferrals(level1[i]);
-                totalSize += level2.length > maxReferralsPerLevel ? maxReferralsPerLevel : level2.length;
-                
-                if (maxReferralDepth >= 3) {
-                    uint256 level2Count = level2.length > maxReferralsPerLevel ? maxReferralsPerLevel : level2.length;
-                    for (uint j = 0; j < level2Count; j++) {
-                        address[] memory level3 = referralStorage.getReferrals(level2[j]);
-                        totalSize += level3.length > maxReferralsPerLevel ? maxReferralsPerLevel : level3.length;
-                    }
-                }
+        totalSize += level1.length;
+        
+        for (uint i = 0; i < level1.length; i++) {
+            address[] memory level2 = referralStorage.getReferrals(level1[i]);
+            totalSize += level2.length;
+            
+            for (uint j = 0; j < level2.length; j++) {
+                totalSize += referralStorage.getReferrals(level2[j]).length;
             }
         }
         
-        // Apply pagination
-        uint256 resultSize = (offset >= totalSize) ? 0 : ((totalSize - offset) < limit ? (totalSize - offset) : limit);
-        downline = new ReferralInfo[](resultSize);
-        
-        if (resultSize == 0) {
-            return (downline);
-        }
-        
-        // Fill the result array
+        downline = new ReferralInfo[](totalSize);
         uint256 currentIndex = 0;
-        uint256 skippedCount = 0;
         
         // Level 1 (5% earnings)
-        level1Count = level1.length > maxReferralsPerLevel ? maxReferralsPerLevel : level1.length;
-        for (uint i = 0; i < level1Count && currentIndex < resultSize; i++) {
+        for (uint i = 0; i < level1.length; i++) {
             address addr = level1[i];
-            if (skippedCount < offset) {
-                skippedCount++;
-                continue;
-            }
-            
             downline[currentIndex] = ReferralInfo(
                 addr,
                 1,
-                (registrationAmount * referralRewards[0]) / 10000
+                (registrationAmount * 500) / 10000 // 5% of registration
             );
             currentIndex++;
             
-            if (currentIndex >= resultSize) break;
-        }
-        
-        // Level 2 (3% earnings)
-        if (maxReferralDepth >= 2) {
-            level1Count = level1.length > maxReferralsPerLevel ? maxReferralsPerLevel : level1.length;
-            for (uint i = 0; i < level1Count && currentIndex < resultSize; i++) {
-                address[] memory level2 = referralStorage.getReferrals(level1[i]);
-                uint256 level2Count = level2.length > maxReferralsPerLevel ? maxReferralsPerLevel : level2.length;
+            // Level 2 (3% earnings)
+            address[] memory level2 = referralStorage.getReferrals(addr);
+            for (uint j = 0; j < level2.length; j++) {
+                address addr2 = level2[j];
+                downline[currentIndex] = ReferralInfo(
+                    addr2,
+                    2,
+                    (registrationAmount * 300) / 10000 // 3% of registration
+                );
+                currentIndex++;
                 
-                for (uint j = 0; j < level2Count && currentIndex < resultSize; j++) {
-                    address addr2 = level2[j];
-                    if (skippedCount < offset) {
-                        skippedCount++;
-                        continue;
-                    }
-                    
+                // Level 3 (1% earnings)
+                address[] memory level3 = referralStorage.getReferrals(addr2);
+                for (uint k = 0; k < level3.length; k++) {
                     downline[currentIndex] = ReferralInfo(
-                        addr2,
-                        2,
-                        (registrationAmount * referralRewards[1]) / 10000
+                        level3[k],
+                        3,
+                        (registrationAmount * 100) / 10000 // 1% of registration
                     );
                     currentIndex++;
-                    
-                    if (currentIndex >= resultSize) break;
                 }
-                
-                if (currentIndex >= resultSize) break;
             }
         }
         
-        // Level 3 (1% earnings)
-        if (maxReferralDepth >= 3) {
-            level1Count = level1.length > maxReferralsPerLevel ? maxReferralsPerLevel : level1.length;
-            for (uint i = 0; i < level1Count && currentIndex < resultSize; i++) {
-                address[] memory level2 = referralStorage.getReferrals(level1[i]);
-                uint256 level2Count = level2.length > maxReferralsPerLevel ? maxReferralsPerLevel : level2.length;
-                
-                for (uint j = 0; j < level2Count && currentIndex < resultSize; j++) {
-                    address[] memory level3 = referralStorage.getReferrals(level2[j]);
-                    uint256 level3Count = level3.length > maxReferralsPerLevel ? maxReferralsPerLevel : level3.length;
-                    
-                    for (uint k = 0; k < level3Count && currentIndex < resultSize; k++) {
-                        address addr3 = level3[k];
-                        if (skippedCount < offset) {
-                            skippedCount++;
-                            continue;
-                        }
-                        
-                        downline[currentIndex] = ReferralInfo(
-                            addr3,
-                            3,
-                            (registrationAmount * referralRewards[2]) / 10000
-                        );
-                        currentIndex++;
-                        
-                        if (currentIndex >= resultSize) break;
-                    }
-                    
-                    if (currentIndex >= resultSize) break;
-                }
-                
-                if (currentIndex >= resultSize) break;
-            }
-        }
-        
-        return (downline);
-    }
+        return downline;
+    } 
 
     /**
      * @dev Batch get user stats for multiple addresses
