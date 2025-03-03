@@ -18,7 +18,7 @@ import { ModulesProvider } from './ModuleContext';
 
 function App() {
   const [address, setAddress] = useState<string | null>(null);
-  const { stats, loading: userStatsLoading, error: userStatsError } = useUserStats(address);
+  const { stats, error: userStatsError } = useUserStats(address);
 
   // Block rendering until data is loaded
   //if (userStatsLoading) {
