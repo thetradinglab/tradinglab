@@ -1,5 +1,6 @@
 import { TestTube } from 'lucide-react';
-
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 interface UserStats {
   referrer: string;
@@ -16,8 +17,18 @@ interface ReferralDashboardProps {
 }
 
 export function ReferralDashboard({ stats, address}: ReferralDashboardProps) {                           
-  if (stats && address) {
+  const { ref } = useParams();
 
+  useEffect(() => {
+    // Check for referral in URL when component mounts
+    console.log(ref)
+    if (ref) {
+      localStorage.setItem('referrer', ref);
+    }
+  }, []);
+  
+  if (stats && address) {
+   
   }
   return (
     <div className="py-20 overflow-hidden">

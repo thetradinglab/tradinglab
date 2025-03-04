@@ -21,7 +21,7 @@ export function ReferralRegistration({ userAddress }: Props) {
 
   const getReferralLink = () => {
     const baseUrl = window.location.origin;
-    return `${baseUrl}?ref=${userAddress}`;
+    return `${baseUrl}/${userAddress}`;
   };
 
   const copyToClipboard = async () => {
@@ -68,7 +68,7 @@ export function ReferralRegistration({ userAddress }: Props) {
 
         <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6 shadow-xl">
           <div className="space-y-2">
-    
+
               <div className="bg-[#0A1929]/50 rounded-lg border border-cyan-900/30 p-4">
                 <div className="flex items-center justify-center mb-2">
                   <span className="text-sm font-medium text-gray-300 px-4">Registration Cost</span>
@@ -101,7 +101,8 @@ export function ReferralRegistration({ userAddress }: Props) {
                 value={referrerAddress}
                 onChange={(e) => setReferrerAddress(e.target.value)}
                 placeholder="0x..."
-                className="mt-1 block w-full rounded-lg border border-cyan-900/30 bg-[#0A1929] text-white px-3 py-2 focus:ring-cyan-500 focus:border-cyan-500"
+                disabled={referrerAddress ? true : false}
+                className="mt-1 text-sm block w-full rounded-lg border border-cyan-900/30 bg-[#0A1929] text-gray-300 px-3 py-2 focus:ring-cyan-500 focus:border-cyan-500"
               />
             </div>
 

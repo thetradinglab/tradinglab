@@ -67,7 +67,7 @@ function App() {
         <Header onConnectIsAddress={setAddress} currentAddress={address} />
           <ModulesProvider initialModules={initialModules}>
             <Routes>
-              <Route path="/" element= {<ReferralDashboard stats={stats} address={address} />} />
+              <Route path="/:ref?" element= {<ReferralDashboard stats={stats} address={address} />} />
               <Route path="/register" element= {
                 <ProtectedRoute>
                   <ReferralRegistration userAddress={address}/>

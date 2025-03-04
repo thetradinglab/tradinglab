@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
-import { Users, Award, BarChart2, Share2, AlertCircle } from 'lucide-react';
+import { Users, Award, BarChart2, Share2, AlertCircle, ClipboardCheck } from 'lucide-react';
 import { useReferralTree, useBatchUserStats, useGetAddress } from '../lib/web3/hooks';
 import { formatReward, shortenAddress } from '../lib/web3/utils';
 import { SubscriptionNFT } from './SubscriptionNFTData';
@@ -52,6 +52,20 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
   const UPDATE_INTERVAL = 30000;
   const initialLoadRef = useRef<boolean>(false);
 
+  const getReferralLink = () => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/#/${address}`;
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(getReferralLink());
+      alert('Referral link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
   console.log("stats:", stats);
   console.log("address:", address);
 
@@ -76,7 +90,6 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
         </div>
       );
     }
-
 
     //const { stats, loading: statsLoading } = useUserStats(address) as { stats: UserStats | null, loading: boolean };
     const { tree, loading: treeLoading } = useReferralTree(address || '');
@@ -201,9 +214,34 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
   if (!treeLoading && !isBatchLoading && tree && batchStats && stats) { return (
     <div className="container mx-auto px-4 py-8">
 
-      <h1 className="text-3xl font-bold text-white mb-8">Research Dashboard</h1>
+      <h1 className="text-3xl font-bold text-white mb-8">Affiliate Dashboard</h1>
+      <div className="space-y-4">
+      <div className="py-4 flex-1 mb-8">
+      
+      <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6">
+        <div className='text-medium text-white p-2'>
+          Your Referral Link
+        </div>
+      <div className="flex items-center gap-2">
+          <input
+            type="text"
+            readOnly
+            value={getReferralLink()}
+            className="flex-1 rounded-lg border border-cyan-900/30 bg-[#0A1929] text-gray-300 px-3 py-2 text-sm"
+          />
+          <button
+            onClick={copyToClipboard}
+            className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-cyan-500 hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+          >
+            <Share2 className="h-4 w-4 mr-1" />
+            Share
+          </button>
+          </div>
+        </div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
             <Users className="w-6 h-6 text-cyan-400" />
@@ -239,6 +277,24 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">Direct Referrals</h2>
+            <BarChart2 className="w-5 h-5 text-cyan-400" />
+          </div>
+          <div className="space-y-4">
+            {groupedByLevel[1]?.map((ref) => (
+              <div key={ref.addr} className="flex items-center justify-between py-3 border-b border-cyan-900/30">
+                <div className="text-white font-medium">{shortenAddress(ref.addr)}</div>
+                <div className="text-cyan-400">
+                  {groupedByLevel[1]?.find(ref => ref.addr.toLowerCase() === ref.addr.toLowerCase())?.rewardsEarned 
+                    ? formatReward(groupedByLevel[1].find(ref => ref.addr.toLowerCase() === ref.addr.toLowerCase())!.rewardsEarned)
+                    : "0"} Tokens
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-white">Referral Network</h2>
@@ -272,24 +328,6 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
           </div>
         </div>
 
-        <div className="bg-[#112A45] border border-cyan-900/50 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">Direct Referrals</h2>
-            <BarChart2 className="w-5 h-5 text-cyan-400" />
-          </div>
-          <div className="space-y-4">
-            {groupedByLevel[1]?.map((ref) => (
-              <div key={ref.addr} className="flex items-center justify-between py-3 border-b border-cyan-900/30">
-                <div className="text-white font-medium">{shortenAddress(ref.addr)}</div>
-                <div className="text-cyan-400">
-                  {groupedByLevel[1]?.find(ref => ref.addr.toLowerCase() === ref.addr.toLowerCase())?.rewardsEarned 
-                    ? formatReward(groupedByLevel[1].find(ref => ref.addr.toLowerCase() === ref.addr.toLowerCase())!.rewardsEarned)
-                    : "0"} Tokens
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
