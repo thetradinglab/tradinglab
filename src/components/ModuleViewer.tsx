@@ -134,8 +134,37 @@ function ModulesViewer({ stats }: ModulesViewerProps) {
               onComplete={handleVideoComplete}
             />
             {/* Lesson navigation */}
+            <div className="mt-6 flex justify-between">
+              <button 
+                onClick={() => setCurrentLessonIndex(prev => Math.max(0, prev - 1))}
+                disabled={currentLessonIndex === 0}
+                className={`px-4 py-2 rounded ${currentLessonIndex === 0 ? 'bg-gray-600 text-gray-400' : 'bg-cyan-600 text-white hover:bg-cyan-700'}`}
+              >
+                Previous Lesson
+              </button>
+              
+              <button 
+                onClick={() => {
+                  // Mark current lesson as completed when moving to next lesson
+                  if (!currentLesson.completed) {
+                    updateLessonStatus(currentModule.id, currentLesson.id, true);
+                  }
+                  setCurrentLessonIndex(prev => Math.min(currentModule.lessons.length - 1, prev + 1));
+                }}
+                disabled={currentLessonIndex === currentModule.lessons.length - 1}
+                className={`px-4 py-2 rounded ${currentLessonIndex === currentModule.lessons.length - 1 ? 'bg-gray-600 text-gray-400' : 'bg-cyan-600 text-white hover:bg-cyan-700'}`}
+              >
+                Next Lesson
+              </button>
+            </div>
           </div>
           <div className="bg-[#112A45] rounded-lg p-6">
+            <h3 className="text-lg font-medium text-white mb-3">Course Modules</h3>
+            <ModuleProgress
+              modules={adaptedModules}
+              currentModule={moduleIndex}
+              setCurrentModule={(index: number) => navigate(`/module/${filteredModules[index].id}?tier=${userTier}`)}
+            />
             <h2 className="text-xl font-bold text-white mb-4">Module Lessons</h2>
             <div className="space-y-4 mb-8">
               {currentModule.lessons.map((lesson: Lesson, index: number) => (
@@ -163,12 +192,6 @@ function ModulesViewer({ stats }: ModulesViewerProps) {
                 </div>
               ))}
             </div>
-            <h3 className="text-lg font-medium text-white mb-3">Course Modules</h3>
-            <ModuleProgress
-              modules={adaptedModules}
-              currentModule={moduleIndex}
-              setCurrentModule={(index: number) => navigate(`/module/${filteredModules[index].id}?tier=${userTier}`)}
-            />
           </div>
         </div>
       </main>

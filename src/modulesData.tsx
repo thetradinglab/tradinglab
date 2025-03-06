@@ -1,4 +1,4 @@
-import { TestTube, TrendingUp, LineChart, BarChart2, Brain, Gauge } from 'lucide-react';
+import { TestTube, TrendingUp, LineChart, Brain, Gauge } from 'lucide-react';
 
 interface Module {
   id: string;
