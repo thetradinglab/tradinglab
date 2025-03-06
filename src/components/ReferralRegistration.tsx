@@ -21,7 +21,7 @@ export function ReferralRegistration({ userAddress }: Props) {
 
   const getReferralLink = () => {
     const baseUrl = window.location.origin;
-    return `${baseUrl}/${userAddress}`;
+    return `${baseUrl}/tradinglab/#/${userAddress}`;
   };
 
   const copyToClipboard = async () => {

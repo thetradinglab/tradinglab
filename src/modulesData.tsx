@@ -36,14 +36,14 @@ export const modules: Module[] = [
             title: 'Introduction to Market Structure',
             duration: '15:30',
             videoUrl: 'https://example.com/video1.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-2',
             title: 'Order Types and Execution',
             duration: '22:45',
             videoUrl: 'https://example.com/video2.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-3',
@@ -60,8 +60,8 @@ export const modules: Module[] = [
             completed: false
           }
         ],
-          locked: false,
-          progress: 75
+          locked: true,
+          progress: 0
         },
         {
           id: 'technical-analysis',
@@ -76,7 +76,7 @@ export const modules: Module[] = [
             title: 'Introduction to Market Structure',
             duration: '15:30',
             videoUrl: 'https://example.com/video1.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-2',
@@ -100,8 +100,8 @@ export const modules: Module[] = [
             completed: false
           }
         ],
-          locked: false,
-          progress: 30
+          locked: true,
+          progress: 0
         },
         {
           id: 'risk-management',
@@ -116,53 +116,14 @@ export const modules: Module[] = [
             title: 'Introduction to Market Structure',
             duration: '15:30',
             videoUrl: 'https://example.com/video1.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-2',
             title: 'Order Types and Execution',
             duration: '22:45',
             videoUrl: 'https://example.com/video2.mp4',
-            completed: true
-          },
-          {
-            id: 'lesson-3',
-            title: 'Price Action Fundamentals',
-            duration: '18:15',
-            videoUrl: 'https://example.com/video3.mp4',
             completed: false
-          },
-          {
-            id: 'lesson-4',
-            title: 'Market Participants',
-            duration: '20:00',
-            videoUrl: 'https://example.com/video4.mp4',
-            completed: false
-          }
-        ],
-          locked: false
-        },
-        {
-          id: 'advanced-patterns',
-          title: "Advanced Pattern Recognition",
-          description: "Complex chart patterns and market psychology",
-          icon: <Brain className="w-6 h-6 text-cyan-400" />,
-          level: "Advanced",
-          duration: "8 weeks",
-          tier: 'advanced',
-          lessons: [ {
-            id: 'lesson-1',
-            title: 'Introduction to Market Structure',
-            duration: '15:30',
-            videoUrl: 'https://example.com/video1.mp4',
-            completed: true
-          },
-          {
-            id: 'lesson-2',
-            title: 'Order Types and Execution',
-            duration: '22:45',
-            videoUrl: 'https://example.com/video2.mp4',
-            completed: true
           },
           {
             id: 'lesson-3',
@@ -182,26 +143,26 @@ export const modules: Module[] = [
           locked: true
         },
         {
-          id: 'quant-strategies',
-          title: "Quantitative Strategies",
-          description: "Mathematical models and algorithmic trading",
-          icon: <BarChart2 className="w-6 h-6 text-cyan-400" />,
+          id: 'advanced-patterns',
+          title: "Coming Soon...",
+          description: "Complex chart patterns and market psychology",
+          icon: <Brain className="w-6 h-6 text-cyan-400" />,
           level: "Advanced",
-          duration: "10 weeks",
+          duration: "8 weeks",
           tier: 'advanced',
           lessons: [ {
             id: 'lesson-1',
             title: 'Introduction to Market Structure',
             duration: '15:30',
             videoUrl: 'https://example.com/video1.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-2',
             title: 'Order Types and Execution',
             duration: '22:45',
             videoUrl: 'https://example.com/video2.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-3',
@@ -222,7 +183,7 @@ export const modules: Module[] = [
         },
         {
           id: 'institutional',
-          title: "Institutional Trading Lab",
+          title: "Coming Soon...",
           description: "Professional trading desk methodologies",
           icon: <TrendingUp className="w-6 h-6 text-cyan-400" />,
           level: "Pro",
@@ -233,14 +194,14 @@ export const modules: Module[] = [
             title: 'Introduction to Market Structure',
             duration: '15:30',
             videoUrl: 'https://example.com/video1.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-2',
             title: 'Order Types and Execution',
             duration: '22:45',
             videoUrl: 'https://example.com/video2.mp4',
-            completed: true
+            completed: false
           },
           {
             id: 'lesson-3',

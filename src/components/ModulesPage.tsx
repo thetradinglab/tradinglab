@@ -1,50 +1,54 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Unlock } from 'lucide-react';
-import { useModules } from '../ModuleContext';
-
 
 interface Lesson {
-  id: string;
-  title: string;
-  duration: string;
-  videoUrl: string;
-  completed: boolean;
+    id: string;
+    title: string;
+    duration: string;
+    videoUrl: string;
+    completed: boolean;
+  }
+  
+  interface Module {
+    id: string;
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    level: string;
+    duration: string;
+    tier: 'basic' | 'advanced' | 'pro';
+    lessons: Lesson[];
+    locked: boolean;
+    progress?: number;
+  }
+
+interface ModulesPageProps {
+  userTier?: string;
+  modules: Module[];
 }
 
-interface Module {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  level: string;
-  duration: string;
-  tier: 'basic' | 'advanced' | 'pro';
-  lessons: Lesson[];
-  locked: boolean;
-  progress?: number;
-}
-interface ModulesProps {
-  userTier?: string;
-}
-function Modules({userTier}: ModulesProps) {
+function ModulesPage({ userTier, modules }: ModulesPageProps) {
   const navigate = useNavigate();
-  const { modules } = useModules();
- 
-  const filteredModules = userTier 
-    ? modules.filter(m => m.tier === userTier)
+
+  const filteredModules = userTier
+    ? modules.filter((module: Module) => module.tier === userTier)
+    .map((module) => ({
+        ...module,
+        locked: false,
+    }))
     : modules;
 
   const handleModuleClick = (moduleId: string, locked: boolean) => {
     if (!locked) {
-      navigate(`/module/${moduleId}`);
+      navigate(`/module/${moduleId}/${userTier}`);
     }
   };
+
   interface ModulesByTier {
     [key: string]: Module[];
   }
 
-  // Group modules by tier for display with proper typing
   const modulesByTier = filteredModules.reduce<ModulesByTier>((acc: ModulesByTier, module: Module) => {
     if (!acc[module.tier]) {
       acc[module.tier] = [];
@@ -58,7 +62,7 @@ function Modules({userTier}: ModulesProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-white">Modules</h1>
+        <h1 className="text-3xl font-bold text-white">Your Modules</h1>
         <div className="flex items-center space-x-2 text-sm">
           <span className="flex items-center text-green-400">
             <Unlock className="w-4 h-4 mr-1" /> Available
@@ -70,10 +74,10 @@ function Modules({userTier}: ModulesProps) {
       </div>
 
       <div className="space-y-8">
-        {tiers.map(tier => {
+        {tiers.map((tier) => {
           const tierModules = modulesByTier[tier] || [];
           if (tierModules.length === 0) return null;
-          
+
           return (
             <div key={tier}>
               <h2 className="text-xl font-semibold text-cyan-400 mb-4">
@@ -139,4 +143,4 @@ function Modules({userTier}: ModulesProps) {
   );
 }
 
-export default Modules;
+export default ModulesPage;

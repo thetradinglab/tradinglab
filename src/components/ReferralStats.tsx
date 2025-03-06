@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
-import { Users, Award, BarChart2, Share2, AlertCircle, ClipboardCheck } from 'lucide-react';
+import { Users, Award, BarChart2, Share2, AlertCircle } from 'lucide-react';
 import { useReferralTree, useBatchUserStats, useGetAddress } from '../lib/web3/hooks';
 import { formatReward, shortenAddress } from '../lib/web3/utils';
 import { SubscriptionNFT } from './SubscriptionNFTData';
@@ -20,7 +20,6 @@ interface ReferralInfo {
   rewardsEarned: bigint;
   parentAddr?: string;
 }
-
 
 function buildReferralTree(referrals: ReferralInfo[], batchStats: UserStats[]) {  
   const referrerMap = new Map<string, string>();
@@ -54,7 +53,7 @@ export function ReferralStats({stats, address}: ReferralStatsProps)  {
 
   const getReferralLink = () => {
     const baseUrl = window.location.origin;
-    return `${baseUrl}/#/${address}`;
+    return `${baseUrl}/tradinglab/#/${address}`;
   };
 
   const copyToClipboard = async () => {

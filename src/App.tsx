@@ -10,7 +10,8 @@ import { ReferralRegistration } from './components/ReferralRegistration';
 import SubPage from './components/SubPage';
 import SettingsProp from './components/SettingsProp';
 import GetWallet from './components/GetWallet';
-import ModulesPage from './components/Modules'
+//import ModulesPage from './components/Modules'
+import Modules from './components/Modules'
 import MyModules from './components/MyModules';
 import ModulesViewer from './components/ModuleViewer';
 import { modules as initialModules } from './modulesData';
@@ -86,9 +87,9 @@ function App() {
               } />
   
               <Route path="/updates" element= {<TradingUpdates />} /> 
-              <Route path="/modules" element= {<ModulesPage/>} />
-              <Route path="/module/:moduleId" element ={<ModulesViewer />} />
-              <Route path="/my-modules" element={<MyModules />} />
+              <Route path="/modules" element= {<Modules/>} />
+              <Route path="/module/:moduleId/:userTier" element={<ModulesViewer stats={stats} />} />
+              <Route path="/my-modules" element={<MyModules stats={stats} />} />
               <Route path="/settings" element= {<SettingsProp stats={stats} address={address}/>} />
               <Route path="/getwallet" element= {<GetWallet stats={stats} address={address}/>} /> 
             </Routes>

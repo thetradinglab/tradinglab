@@ -18,7 +18,7 @@ interface ReferralDashboardProps {
 
 export function ReferralDashboard({ stats, address}: ReferralDashboardProps) {                           
   const { ref } = useParams();
-
+  
   useEffect(() => {
     // Check for referral in URL when component mounts
     console.log(ref)
